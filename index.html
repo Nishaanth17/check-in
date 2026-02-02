@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checking in on you ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #e8a4b8;
+      --rose-dark: #d4859a;
+      --blush: #e8f5e9;
+      --cream: #f1f8e9;
+      --warm: #c8e6c9;
+      --text: #4a3c39;
+      --text-soft: #7d6b68;
+      --accent: #e07a8a;
+      --gold: #e8b86d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 50%, var(--warm) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.15;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .heart:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .heart:nth-child(2) { left: 85%; top: 15%; animation-delay: 2s; }
+    .heart:nth-child(3) { left: 20%; top: 70%; animation-delay: 4s; }
+    .heart:nth-child(4) { left: 75%; top: 65%; animation-delay: 1s; }
+    .heart:nth-child(5) { left: 50%; top: 40%; animation-delay: 3s; }
+    .heart:nth-child(6) { left: 5%; top: 50%; animation-delay: 5s; }
+    .heart:nth-child(7) { left: 90%; top: 45%; animation-delay: 2.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.15; }
+      50% { transform: translateY(-20px) rotate(5deg); opacity: 0.25; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .greeting {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s ease-out;
+    }
+
+    .greeting h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .greeting p {
+      font-size: 1.1rem;
+      color: var(--text-soft);
+      font-weight: 300;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 32px rgba(232, 164, 184, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      width: 100%;
+      animation: fadeUp 0.8s ease-out 0.2s both;
+    }
+
+    .card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card h2 span {
+      font-size: 1.25rem;
+      opacity: 0.8;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .option {
+      padding: 0.75rem 1.25rem;
+      border-radius: 50px;
+      border: 2px solid var(--rose);
+      background: white;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .option:hover {
+      transform: translateY(-2px) scale(1.02);
+      background: var(--rose);
+      color: white;
+      box-shadow: 0 4px 15px rgba(232, 164, 184, 0.4);
+    }
+
+    .option.selected {
+      background: var(--rose-dark);
+      border-color: var(--rose-dark);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .option.selected:hover {
+      background: var(--rose-dark);
+      color: white;
+    }
+
+    .message-area {
+      margin-top: 2rem;
+      animation: fadeUp 0.6s ease-out 0.4s both;
+    }
+
+    .message-box {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(232, 164, 184, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .message-box h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .message-box textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 1rem;
+      border-radius: 16px;
+      border: 2px solid var(--warm);
+      background: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      resize: vertical;
+      transition: border-color 0.3s;
+    }
+
+    .message-box textarea:focus {
+      outline: none;
+      border-color: var(--rose);
+    }
+
+    .message-box textarea::placeholder {
+      color: var(--text-soft);
+      opacity: 0.7;
+    }
+
+    .send-btn {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      border: none;
+      background: linear-gradient(135deg, var(--rose) 0%, var(--accent) 100%);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(224, 122, 138, 0.4);
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(224, 122, 138, 0.5);
+    }
+
+    .send-btn:active {
+      transform: translateY(0);
+    }
+
+    .thank-you {
+      text-align: center;
+      padding: 2rem;
+      display: none;
+    }
+
+    .thank-you.visible {
+      display: block;
+      animation: fadeUp 0.6s ease-out;
+    }
+
+    .thank-you h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .thank-you .big-heart {
+      font-size: 4rem;
+      margin: 1rem 0;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.9; }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: confetti-fall 3s ease-out forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 2rem 1rem 3rem;
+      }
+      .card {
+        padding: 1.5rem;
+      }
+      .option {
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts-bg">
+    <span class="heart">✨</span>
+    <span class="heart">✨</span>
+    <span class="heart">✨</span>
+    <span class="heart">✨</span>
+    <span class="heart">✨</span>
+    <span class="heart">✨</span>
+    <span class="heart">✨</span>
+  </div>
+
+  <div class="container">
+    <div class="greeting">
+      <h1>Hey Deeksha ✨</h1>
+      <p>Just checking in on you</p>
+    </div>
+
+    <div class="card">
+      <h2>How are you doing? <span>✨</span></h2>
+      <div class="options" id="mood-options">
+        <button class="option" data-value="amazing">Okaish</button>
+        <button class="option" data-value="good">Good</button>
+        <button class="option" data-value="okay">Low</button>
+        <button class="option" data-value="tired">A bit tired</button>
+        <button class="option" data-value="meh">Could be better</button>
+        <button class="option" data-value="rough">Having a rough day</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>What do you need right now? <span>💭</span></h2>
+      <div class="options" id="needs-options">
+        <button class="option" data-value="hugs">Hugs</button>
+        <button class="option" data-value="talk">To talk</button>
+        <button class="option" data-value="space">Some space</button>
+        <button class="option" data-value="rest">Rest</button>
+        <button class="option" data-value="food">Food</button>
+        <button class="option" data-value="comfort">Sleep</button>
+        <button class="option" data-value="fun">Something fun</button>
+        <button class="option" data-value="surprise">Surprise me</button>
+      </div>
+    </div>
+
+    <div class="message-area">
+      <div class="message-box">
+        <h3>Anything else you want me to know?</h3>
+        <textarea id="custom-message" placeholder="Tell me anything... I'm here for you ✨"></textarea>
+        <button class="send-btn" id="send-btn">I got you 😊</button>
+      </div>
+    </div>
+
+    <div class="thank-you" id="thank-you">
+      <h2>Thanks for sharing</h2>
+      <p>I will do my best</p>
+      <div class="big-heart">🤗</div>
+      <p style="color: var(--text-soft); font-size: 0.95rem;">Sending you the biggest hug</p>
+    </div>
+  </div>
+
+  <script>
+    const moodOptions = document.getElementById('mood-options')
+    const needsOptions = document.getElementById('needs-options')
+    const sendBtn = document.getElementById('send-btn')
+    const thankYou = document.getElementById('thank-you')
+    const cards = document.querySelectorAll('.card')
+    const messageArea = document.querySelector('.message-area')
+
+    const colors = ['#e8a4b8', '#e8b86d', '#e07a8a', '#d4859a', '#c9a0a0']
+
+    function setupOptions(container, allowMultiple = false) {
+      const options = container.querySelectorAll('.option')
+      options.forEach(opt => {
+        opt.addEventListener('click', () => {
+          if (allowMultiple) {
+            opt.classList.toggle('selected')
+          } else {
+            options.forEach(o => o.classList.remove('selected'))
+            opt.classList.add('selected')
+          }
+          opt.style.animation = 'none'
+          opt.offsetHeight
+          opt.style.animation = 'fadeUp 0.3s ease-out'
+        })
+      })
+    }
+
+    setupOptions(moodOptions)
+    setupOptions(needsOptions, true)
+
+    function createConfetti() {
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement('div')
+        confetti.className = 'confetti'
+        confetti.style.left = Math.random() * 100 + 'vw'
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)]
+        confetti.style.animationDelay = Math.random() * 0.5 + 's'
+        confetti.style.animationDuration = (2 + Math.random() * 2) + 's'
+        document.body.appendChild(confetti)
+        setTimeout(() => confetti.remove(), 4000)
+      }
+    }
+
+    sendBtn.addEventListener('click', () => {
+      const selectedMood = moodOptions.querySelector('.selected')
+      const selectedNeeds = needsOptions.querySelectorAll('.selected')
+      const customMessage = document.getElementById('custom-message').value
+
+      cards.forEach(c => c.style.display = 'none')
+      messageArea.style.display = 'none'
+
+      thankYou.classList.add('visible')
+      createConfetti()
+
+      console.log('Mood:', selectedMood?.dataset.value || 'Not selected')
+      console.log('Needs:', [...selectedNeeds].map(n => n.dataset.value))
+      console.log('Message:', customMessage)
+    })
+  </script>
+</body>
+</html>
